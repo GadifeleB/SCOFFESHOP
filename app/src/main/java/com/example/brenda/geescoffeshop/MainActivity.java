@@ -1,5 +1,6 @@
 package com.example.brenda.geescoffeshop;
 
+import android.content.Intent;
 import android.renderscript.Double2;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.EditText;
 
+
 import static android.R.id.edit;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 import static com.example.brenda.geescoffeshop.R.id.radCappucino;
@@ -19,186 +21,166 @@ import static com.example.brenda.geescoffeshop.R.id.txtAmountDue;
 import static com.example.brenda.geescoffeshop.R.id.txtTotalCap;
 import static com.example.brenda.geescoffeshop.R.id.txtTotalEspress;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
 
     //declaring variables
 
-    private TextView txtCaPrice,txtEsPrice,txtCafPrice,txtMocPrice,TxtCaTotal,txtEsTotal,txtCafTotal,txtMocTotal,txtAmountTotal;
-    private EditText edtitem1,edtitem2, edtitem3,edtitem4;
-    private Button btnAmount, btnorderr,  btnclearr;
-    private RadioButton chkCap, chkCoff, chkMoc, chkExpr;
-    Double total;
-    Double var , quantity;
+    static TextView txtCaPrice,txtEsPrice,txtCafPrice,txtMocPrice,TxtCaTotal,txtEsTotal,txtCafTotal,txtAmountTotal;
+    static EditText edtItem1,edtItem2, edtItem3, edtTopping1, edtTopping2,edtTopping3;
+     Button btnAmount, btnOrderr,  btnClearr,btnNext;
+     static RadioButton RadCap, RadCoff, RadExpr;
+    static Double total;
+    static Double var , quantity;
+    static String topping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // assigning values
         //Prices
         txtCaPrice=(TextView)findViewById(R.id.txtPrice1 );
         txtEsPrice=(TextView)findViewById(R.id.txtprice2 );
         txtCafPrice =(TextView)findViewById(R.id.txtprice3  );
-        txtMocPrice =(TextView)findViewById(R.id.txtprice4);
+
 
         //ITEMS
 
-        edtitem1=(EditText) findViewById(R.id.item1 );
-        edtitem2=(EditText) findViewById(R.id.item2  );
-        edtitem3 =(EditText) findViewById(R.id.item3  );
-        edtitem4 =(EditText) findViewById(R.id.item4 );
+        edtItem1=(EditText) findViewById(R.id.item1 );
+        edtItem2=(EditText) findViewById(R.id.item2  );
+        edtItem3 =(EditText) findViewById(R.id.item3  );
+
+        //toppings
+        edtTopping1=(EditText) findViewById(R.id.editText1);
+        edtTopping2=(EditText) findViewById(R.id.editText2 );
+        edtTopping3= (EditText) findViewById(R.id.editText3);
+
 
       //Totals
 
         TxtCaTotal=(TextView) findViewById(R.id.txtTotalCap );
         txtEsTotal=(TextView) findViewById(R.id.txtTotalEspress  );
         txtCafTotal =(TextView) findViewById(R.id.txtTotalCaffe  );
-        txtMocTotal =(TextView) findViewById(R.id.txtTotalMochaL );
+
 
         //AmountDue
         txtAmountTotal =(TextView) findViewById(txtAmountDue);
 
         //RadioButton
-        chkCap = (RadioButton)findViewById(R.id.radCappucino);
-        chkCoff = (RadioButton)findViewById(R.id.radCaffeLatte);
-        chkMoc = (RadioButton)findViewById(R.id.radMochaLatte);
-        chkExpr = (RadioButton)findViewById(R.id.radEspresso);
+        RadCap = (RadioButton)findViewById(R.id.radCappucino);
+        RadCoff = (RadioButton)findViewById(R.id.radCaffeLatte);
+        RadExpr = (RadioButton)findViewById(R.id.radEspresso);
+
+
+
+
 
         //Buttons
-        btnAmount = (Button)findViewById(R.id.button);
-        btnorderr=(Button)findViewById(R.id.button2);
-        btnclearr=(Button)findViewById(R.id.btnClear);
+        btnAmount = (Button)findViewById(R.id.button2);
+        btnOrderr=(Button)findViewById(R.id.button);
+        btnClearr=(Button)findViewById(R.id.btnClear);
+        btnNext= (Button) findViewById(R.id.btnnext );
 
-        // calculations
-        btnAmount.setOnClickListener(new View.OnClickListener() {
-            @Override
+        btnAmount.setOnClickListener(this);
+        btnOrderr.setOnClickListener(this);
+        btnClearr.setOnClickListener(this);
+        btnNext.setOnClickListener(this);
 
-            public void onClick(View v) {
-                if (chkCap.isChecked()) {
-                    var = Double.valueOf(txtCaPrice.getText().toString());
-                    quantity = Double.valueOf(edtitem1.getText().toString());
-                    total = var * quantity;
-                    TxtCaTotal.setText(Double.toString(total));
-                }
-                if (chkExpr.isChecked()) {
-                    var = Double.valueOf(txtEsPrice.getText().toString());
-                    quantity = Double.valueOf(edtitem2.getText().toString());
-                    total = var * quantity;
-                    txtEsTotal.setText(Double.toString(total));
+    }
 
+    @Override
+    public void onClick(View v) {
 
-                }
+        switch (v.getId()) {
+            case R.id.btnnext:
 
-                if (chkCoff.isChecked()) {
-                    var = Double.valueOf(txtCafPrice.getText().toString());
-                    quantity = Double.valueOf(edtitem3.getText().toString());
-                    total = var * quantity;
-                    txtCafTotal.setText(Double.toString(total));
+                Intent i = new Intent(MainActivity.this, Main2Activity.class);
+                startActivity(i);
+                break;
 
-            }
+            case R.id.btnClear:
 
+                edtItem1.setText("");
+                edtItem2.setText("");
+                edtItem3.setText("");
 
-                if(chkMoc.isChecked()) {
-                    var = Double.valueOf(txtMocPrice .getText().toString());
-                    quantity = Double.valueOf(edtitem4.getText().toString());
-                    total = var * quantity;
-                    txtMocTotal.setText(Double.toString(total));
+                edtTopping1.setText("");
+                edtTopping2.setText("");
+                edtTopping3.setText("");
 
-                }
-                if(chkCap.isChecked() && chkExpr.isChecked()){
-                    var = Double.valueOf(txtEsPrice.getText().toString());
-                    quantity = Double.valueOf(edtitem2.getText().toString());
-                    total = var * quantity;
-                    txtEsTotal.setText(Double.toString(total));
-
-                    var = Double.valueOf(txtCaPrice.getText().toString());
-                    quantity = Double.valueOf(edtitem1.getText().toString());
-                    total = var * quantity;
-                    TxtCaTotal.setText(Double.toString(total));
-                }
-
-
-            }
-        });
-
-        btnorderr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Double capppacino = Double.valueOf(TxtCaTotal.getText().toString());
-                Double expresso = Double.valueOf(txtEsTotal.getText().toString());
-                Double caffe = Double.valueOf(txtCafTotal.getText().toString());
-                Double moch = Double.valueOf(txtMocTotal.getText().toString());
-                total = capppacino + expresso + caffe + moch;
-                txtAmountTotal.setText(Double.toString(total));
-            }
-        });
-
-        chkCap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!chkCap.isChecked()){
-                    edtitem1.setVisibility(View.INVISIBLE);
-                }else{
-                    edtitem1.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        chkExpr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!chkExpr.isChecked()){
-                    edtitem2.setVisibility(View.INVISIBLE);
-                }else{
-                    edtitem2.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        chkCoff.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!chkCoff.isChecked()){
-                    edtitem3.setVisibility(View.INVISIBLE);
-                }else{
-                    edtitem3.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
-        chkMoc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!chkMoc.isChecked()){
-                    edtitem4.setVisibility(View.INVISIBLE);
-                }else{
-                    edtitem4.setVisibility(View.VISIBLE);
-                }
-            }
-
-        });
-
-        // clearing views
-        btnclearr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edtitem1.setText("");
-                edtitem2.setText("");
-                edtitem3 .setText("");
-                edtitem4 .setText("");
-
-                txtCafTotal .setText("");
-                txtMocTotal .setText("");
+                txtCafTotal.setText("");
                 txtEsTotal.setText("");
                 TxtCaTotal.setText("");
 
-                txtAmountTotal .setText("");
+                txtAmountTotal.setText("");
                 txtEsTotal.setText("");
+                break;
 
-            }
-        });
+
+            case R.id.button:
+
+                        if (RadCap.isChecked()) {
+
+                            var = Double.valueOf(txtCaPrice.getText().toString());
+                            quantity = Double.valueOf(edtItem1.getText().toString());
+
+                            total = var * quantity;
+                            TxtCaTotal.setText(Double.toString(total));
+                        }
+                        if (RadExpr.isChecked()) {
+                            var = Double.valueOf(txtEsPrice.getText().toString());
+                            quantity = Double.valueOf(edtItem2.getText().toString());
+                            total = var * quantity;
+                            txtEsTotal.setText(Double.toString(total));
+
+                        }
+
+                        if (RadCoff.isChecked()) {
+                            var = Double.valueOf(txtCafPrice.getText().toString());
+                            quantity = Double.valueOf(edtItem3.getText().toString());
+                            total = var * quantity;
+                            txtCafTotal.setText(Double.toString(total));
+
+                        }
+
+
+                        if (RadCap.isChecked() && RadExpr.isChecked()) {
+                            var = Double.valueOf(txtEsPrice.getText().toString());
+                            quantity = Double.valueOf(edtItem2.getText().toString());
+                            total = var * quantity;
+                            txtEsTotal.setText(Double.toString(total));
+
+                            var = Double.valueOf(txtCaPrice.getText().toString());
+                            quantity = Double.valueOf(edtItem1.getText().toString());
+                            total = var * quantity;
+                            TxtCaTotal.setText(Double.toString(total));
+                            break;
+                        }
+
+
+
+            case R.id.button2:
+
+                Double capppacino = Double.valueOf(TxtCaTotal.getText().toString());
+                Double expresso = Double.valueOf(txtEsTotal.getText().toString());
+                Double caffe = Double.valueOf(txtCafTotal.getText().toString());
+
+                total = capppacino + expresso + caffe;
+                txtAmountTotal.setText(Double.toString(total));
+                break;
+
+        }
+
+
+
+
+
+        }
+
+
     }
-}
+
 
